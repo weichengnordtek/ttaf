@@ -91,7 +91,7 @@ public class Utkereso {
     List<MyLink> l = alg.getPath(v1, v2);
     Number dist = alg.getDistance(v1, v2);
     System.out.println("-----Módszer 2-----");
-    System.out.println("The shortest path from" + v1 + " to " + v2 + " is:");
+    System.out.println("The shortest path from " + v1 + " to " + v2 + " is:");
     System.out.println(l.toString());
     System.out.println("and the length of the path is: " + dist);
     
@@ -122,7 +122,7 @@ public class Utkereso {
     //Start és Autópálya közötti legközelebbi útvonal és távolság
     List<MyLink> k = alg.getPath(v1, last);
     Number dist1 = alg.getDistance(v1, last);
-    System.out.println("The shortest path from" + v1 + " to " + last + " is:");
+    System.out.println("The shortest path from " + v1 + " to " + last + " is:");
     System.out.println(k.toString());
     System.out.println("and the length of the path is: " + dist1);
     BreadthFirstIterator I1 = new BreadthFirstIterator(g, v2);
@@ -146,14 +146,14 @@ public class Utkereso {
     }while(I1.hasNext()&&lb1);
     List<MyLink> k2 = alg.getPath(v2, last2);
     Number dist2 = alg.getDistance(v2, last2);
-    System.out.println("The shortest path from" + v2 + " to " + last2 + " is:");
+    System.out.println("The shortest path from " + v2 + " to " + last2 + " is:");
     System.out.println(k2.toString());
     System.out.println("and the length of the path is: " + dist2);
     
     //két autópályacsomópont közötti legközelebbi útvonal és távolság
     List<MyLink> k3 = alg.getPath(last, last2);
     Number dist3 = alg.getDistance(last, last2);
-    System.out.println("The shortest path from" + last + " to " + last2 + " is:");
+    System.out.println("The shortest path from " + last + " to " + last2 + " is:");
     System.out.println(k3.toString());
     System.out.println("and the length of the path is: " + dist3);
     System.out.println("The full path is: ");
