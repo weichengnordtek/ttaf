@@ -250,7 +250,7 @@ public class Utkereso {
         };
          Transformer<MyLink, String> edgeLabel = new Transformer<MyLink, String>() {
             public String transform(MyLink f) {
-                    return String.valueOf(f.weight);
+                    return f.toString()+" :"+String.valueOf(f.weight);
             }
         };
          

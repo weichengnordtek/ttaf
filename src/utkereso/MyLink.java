@@ -8,6 +8,6 @@ public class MyLink {
        this.weight = weight;
     }
     public String toString() { // Always good for debugging
-       return "Edge :"+name;
+       return name;
     }
 }
