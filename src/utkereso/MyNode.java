@@ -8,7 +8,7 @@ public class MyNode {
         this.type = type;
     }
     public String toString() { // Always a good idea for debuging
-         return "Node: "+name; // JUNG2 makes good use of these.
+         return name; // JUNG2 makes good use of these.
     }
     public String getType() { // Always a good idea for debuging
          return type; // JUNG2 makes good use of these.

@@ -261,7 +261,6 @@ public class Utkereso {
         vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
         vv.getRenderContext().setEdgeLabelTransformer(edgeLabel);
         vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
-     //   vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
         vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);        
 
         JFrame frame = new JFrame();
