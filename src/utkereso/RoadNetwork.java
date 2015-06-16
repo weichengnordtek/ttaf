@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Observable;
 
 import org.apache.commons.collections15.Transformer;
 
@@ -63,11 +64,11 @@ public class RoadNetwork {
 	    };
 	    DijkstraShortestPath<MapNode,Road> pathFinder = new DijkstraShortestPath<MapNode, Road>(network, wtTransformer);
 	    List<Road> path = pathFinder.getPath(getCityByName(city1), getCityByName(city2));
-	    Number dist = pathFinder.getDistance(getCityByName(city1), getCityByName(city2));
+	    Double dist = pathFinder.getDistance(getCityByName(city1), getCityByName(city2)).doubleValue();
 	    return new Route(path, dist);
 	}
 	
-	public List<Route> findShortestRouteUsingHighway(String city1, String city2) {
+	public List<Route> findHighwayRoute(String city1, String city2) {
 	    //Startbol -> legközelebbi autopalya 
 	    Bejaras Floyd =  new Bejaras(network,getCityByName(city1),highwayJunctions);
 	    List<Road> startpointToHighway =Floyd.getShortestPath();
@@ -82,8 +83,8 @@ public class RoadNetwork {
 	    
 	    ArrayList<Route> routes = new ArrayList<Route>(3);
 	    routes.add(startRoute);
-	    routes.add(highwayRoute);
 	    routes.add(endRoute);
+	    routes.add(highwayRoute);
 	    
 	    return routes;
 	}

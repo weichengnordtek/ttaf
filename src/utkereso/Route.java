@@ -5,9 +5,9 @@ import java.util.List;
 public class Route {
 
 	private List<Road> path;
-	private Number length;
+	private Double length;
 
-	public Route(List<Road> path, Number length) {
+	public Route(List<Road> path, Double length) {
 		this.path = path;
 		this.length = length;
 	}
@@ -20,7 +20,7 @@ public class Route {
 		return path;
 	}
 	
-	public Number getLength() {
+	public Double getLength() {
 		return length;
 	}
 	
