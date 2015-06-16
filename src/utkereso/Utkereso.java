@@ -32,7 +32,9 @@ public class Utkereso {
 
   
   public static void main(String[] args) {
-      
+    
+    
+    
     UndirectedSparseGraph g = new UndirectedSparseGraph();
     //Város csomópontok
     MyNode v1 = new MyNode("Bukarest","v"); 
@@ -48,6 +50,14 @@ public class Utkereso {
     MyNode u5 = new MyNode("m5","u");
     MyNode u6 = new MyNode("m6","u");
     MyNode u7 = new MyNode("m7","u");
+    List<MyNode> Tranzit = new ArrayList<MyNode>();
+    Tranzit.add(u1);
+    Tranzit.add(u2);
+    Tranzit.add(u3);
+    Tranzit.add(u4);
+    Tranzit.add(u5);
+    Tranzit.add(u6);
+    Tranzit.add(u7);
    //Élek, útvonalak
     MyLink e1= new MyLink("ut1",3);
     MyLink e2= new MyLink("ut2",2);
@@ -79,8 +89,8 @@ public class Utkereso {
     g.addEdge(e12, v4,v5);
     g.addEdge(e13, v5,u1);
     //Algoritmusok 
-
-    //Módszer 2:  Teljes útvonal heurisztikus 
+    
+    //Módszer 1:  Teljes útvonal heurisztikus 
     Transformer<MyLink, Double> wtTransformer = new Transformer<MyLink,Double>() {
         public Double transform(MyLink link) {
         return link.weight;
@@ -88,117 +98,35 @@ public class Utkereso {
     };
     DijkstraShortestPath<MyNode,MyLink> alg = new DijkstraShortestPath(g,
     wtTransformer);
-    List<MyLink> l = alg.getPath(v1, v2);
-    Number dist = alg.getDistance(v1, v2);
-    System.out.println("-----Módszer 2-----");
-    System.out.println("The shortest path from " + v1 + " to " + v2 + " is:");
+    List<MyLink> l = alg.getPath(v1, v3);
+    Number dist = alg.getDistance(v1, v3);
+    System.out.println("-----Módszer 1-----");
+    System.out.println("The shortest path from" + v1 + " to " + v3 + " is:");
     System.out.println(l.toString());
     System.out.println("and the length of the path is: " + dist);
     
-    //Módszer 1: heurisztikus algoritmussal a megadott kezdő és végpontokat 
-    //a tranzit tábla legközelebbi pontjához navigálja, majd onnantól az előzetesen eltárolt útvonalat adja vissza.
-    //BFS Implementáció
-    BreadthFirstIterator I = new BreadthFirstIterator(g, v1);
-    Queue<MyNode> lista = new LinkedList<MyNode>();
-    int db =0;   //Ez lehet h nem kell
-    boolean lb = true;
-    MyNode last = null;
-    do
-    {
-        
-       MyNode temp=I.next();
-       lista.add(temp);
-       if(temp.getType()=="v")
-       {
-           db++;
-       }
-       else
-       {
-           lb = false;
-       }
-       last=temp;
-    }while(I.hasNext()&&lb);
-    System.out.println("-----Módszer 1-----");
-    //Start és Autópálya közötti legközelebbi útvonal és távolság
-    List<MyLink> k = alg.getPath(v1, last);
-    Number dist1 = alg.getDistance(v1, last);
-    System.out.println("The shortest path from " + v1 + " to " + last + " is:");
-    System.out.println(k.toString());
-    System.out.println("and the length of the path is: " + dist1);
-    BreadthFirstIterator I1 = new BreadthFirstIterator(g, v2);
-    Queue<MyNode> lista1 = new LinkedList<MyNode>();
-    int db1 =0;
-    boolean lb1 = true;
-    MyNode last2 = null;
-    do
-    {
-       MyNode temp1=I1.next();
-       lista1.add(temp1);
-       if(temp1.getType()=="v")
-       {
-           db1++;
-       }
-       else
-       {
-           lb1 = false;
-       }
-       last2=temp1;
-    }while(I1.hasNext()&&lb1);
-    List<MyLink> k2 = alg.getPath(v2, last2);
-    Number dist2 = alg.getDistance(v2, last2);
-    System.out.println("The shortest path from " + v2 + " to " + last2 + " is:");
-    System.out.println(k2.toString());
-    System.out.println("and the length of the path is: " + dist2);
+    //Módszer 2: heurisztikus algoritmussal a megadott kezdő és végpontokat 
+    //Startbol -> legközelebbi autopalya 
+    Bejaras Floyd =  new Bejaras(g,v1,Tranzit);
+    System.out.println(Floyd.getShortestPath());
+    System.out.println(Floyd.getDistance());
+    System.out.println(Floyd.getVegpont());
+    //Vegpont -> legközelebbi autopalya
+    Bejaras Floyd2 =  new Bejaras(g,v3,Tranzit);
+    System.out.println(Floyd2.getShortestPath());
+    System.out.println(Floyd2.getDistance());
+    System.out.println(Floyd2.getVegpont());
+    //Autopalya közötti legrövidebb út
+    List<MyLink> Floyd3 = alg.getPath(Floyd.getVegpont(), Floyd2.getVegpont());
+    Number dist3 = alg.getDistance(Floyd.getVegpont(), Floyd2.getVegpont());
+    System.out.println("-----Módszer 2-----");
+    System.out.println("The shortest path from" + v1 + " to " + v3 + " is:");
+    System.out.println(Floyd.getShortestPath()+Floyd3.toString()+Floyd2.getShortestPath());
+    System.out.println("Total Length" + v1 + " to " + v3 + " is:");
+    System.out.println(Floyd.getDistance()+dist3.doubleValue()+Floyd2.getDistance());
+ 
     
-    //két autópályacsomópont közötti legközelebbi útvonal és távolság
-    List<MyLink> k3 = alg.getPath(last, last2);
-    Number dist3 = alg.getDistance(last, last2);
-    System.out.println("The shortest path from " + last + " to " + last2 + " is:");
-    System.out.println(k3.toString());
-    System.out.println("and the length of the path is: " + dist3);
-    System.out.println("The full path is: ");
-    System.out.println(k.toString()+k3.toString()+k2.toString());
-    System.out.println("and the full length of the path is: ");
-    System.out.println(dist1.doubleValue()+dist2.doubleValue()+dist3.doubleValue());
- /*
-       procedure BFS(G,v):
-2      create a queue Q
-3      enqueue v onto Q
-4      mark v
-5      while Q is not empty:
-6          t ← Q.dequeue()
-7          if t is what we are looking for:
-8              return t
-9          for all edges e in G.adjacentEdges(t) do
-12             o ← G.adjacentVertex(t,e)
-13             if o is not marked:
-14                  mark o
-15                  enqueue o onto Q
-16      return null
-    */
     
-    //Összehasonlítás
-    
-    //test
-    /*
-       Collection<MyNode> myCollection = g.getNeighbors(u1);
-       List<MyNode> neighbor = new ArrayList<MyNode>(myCollection);
-       
-     System.out.println(neighbor.get(1).getType());
-    */
-    //Megjelenítés
-    /*
-    VisualizationImageServer vs =
-      new VisualizationImageServer(
-        new CircleLayout(g), new Dimension(1200, 600));
-    JFrame frame = new JFrame();
-    frame.getContentPane().add(vs);
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-    frame.pack();
-    frame.setVisible(true);
-    */
-    // The Layout<V, E> is parameterized by the vertex and edge types
-
         Layout<MyNode, MyLink> layout = new ISOMLayout(g);
         
         layout.setSize(new Dimension(1000,500));
@@ -261,6 +189,7 @@ public class Utkereso {
         vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
         vv.getRenderContext().setEdgeLabelTransformer(edgeLabel);
         vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
+     //   vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
         vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);        
 
         JFrame frame = new JFrame();
