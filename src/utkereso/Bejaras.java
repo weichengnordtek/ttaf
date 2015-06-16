@@ -20,22 +20,22 @@ import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
 //FLOYD MARSHAL ALGORITMUS 
 // G: gráf , staringVertext: kezdőcsúcs, path: tranzittábla
 public class Bejaras {
-    private List<MyLink> shortestpath = new ArrayList<MyLink>(); //legrövidebb út
-    private UndirectedSparseGraph graph; // gráf
-    private MyNode vegpont; // autópálya csomópont amit keresük
+    private List<Road> shortestpath = new ArrayList<Road>(); //legrövidebb út
+    private UndirectedSparseGraph<MapNode, Road> graph; // gráf
+    private MapNode vegpont; // autópálya csomópont amit keresük
     private Double distance; // legrövidebb útnak a hossza
     
-    public Bejaras(UndirectedSparseGraph g, MyNode startingVertex, List<MyNode> path) {
+    public Bejaras(UndirectedSparseGraph<MapNode, Road> g, MapNode startingVertex, List<MapNode> path) {
         this.graph = g;
         
-        Transformer<MyLink, Double> wtTransformer = new Transformer<MyLink,Double>() {
-	        public Double transform(MyLink link) {
+        Transformer<Road, Double> wtTransformer = new Transformer<Road,Double>() {
+	        public Double transform(Road link) {
 	            return link.weight;
 	        }
         };
-        DijkstraShortestPath<MyNode,MyLink> alg = new DijkstraShortestPath(g,wtTransformer);
+        DijkstraShortestPath<MapNode,Road> alg = new DijkstraShortestPath<MapNode, Road>(g,wtTransformer);
         double min = alg.getDistance(startingVertex, path.get(0)).doubleValue();
-        this.vegpont=path.get(0);
+        this.vegpont = path.get(0);
         for(int i = 1; i < path.size(); i++) {
             if(alg.getDistance(startingVertex, path.get(i)).doubleValue()<min)
             {
@@ -47,13 +47,13 @@ public class Bejaras {
         this.shortestpath=alg.getPath(startingVertex, vegpont);
         this.distance=min;
     }
-    public MyNode getVegpont() {
+    public MapNode getVegpont() {
         return vegpont;
     }
     public Double getDistance() {
         return distance;
     }
-    public List<MyLink> getShortestPath() {
+    public List<Road> getShortestPath() {
         return shortestpath;
     }
 }
