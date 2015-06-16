@@ -1,5 +1,8 @@
 package utkereso;
-
+/**
+*
+* @author Cheng
+*/
 public class MyLink {
     String name;
     double weight; // should be private for good practice

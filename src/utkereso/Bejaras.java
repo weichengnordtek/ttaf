@@ -15,35 +15,34 @@ import org.apache.commons.collections15.Transformer;
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
 /**
  *
- * @author Meev
+ * @author Cheng
  */
+//FLOYD MARSHAL ALGORITMUS 
+// G: gráf , staringVertext: kezdőcsúcs, path: tranzittábla
 public class Bejaras {
-    private List<MyLink> shortestpath = new ArrayList<MyLink>();
-    private UndirectedSparseGraph graph;
-    private MyNode vegpont;
-    private Double distance;
-
+    private List<MyLink> shortestpath = new ArrayList<MyLink>(); //legrövidebb út
+    private UndirectedSparseGraph graph; // gráf
+    private MyNode vegpont; // autópálya csomópont amit keresük
+    private Double distance; // legrövidebb útnak a hossza
+    
     public Bejaras(UndirectedSparseGraph g, MyNode startingVertex, List<MyNode> path) {
         this.graph = g;
         
         Transformer<MyLink, Double> wtTransformer = new Transformer<MyLink,Double>() {
-        public Double transform(MyLink link) {
-            return link.weight;
-        }
+	        public Double transform(MyLink link) {
+	            return link.weight;
+	        }
         };
-        DijkstraShortestPath<MyNode,MyLink> alg = new DijkstraShortestPath(g,
-        wtTransformer);
-        MyNode pp= null;
+        DijkstraShortestPath<MyNode,MyLink> alg = new DijkstraShortestPath(g,wtTransformer);
         double min = alg.getDistance(startingVertex, path.get(0)).doubleValue();
         this.vegpont=path.get(0);
         for(int i = 1; i < path.size(); i++) {
-
             if(alg.getDistance(startingVertex, path.get(i)).doubleValue()<min)
             {
                 min=alg.getDistance(startingVertex, path.get(i)).doubleValue();
                 this.vegpont=path.get(i);
             }
-       }
+        }
         
         this.shortestpath=alg.getPath(startingVertex, vegpont);
         this.distance=min;

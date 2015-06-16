@@ -1,5 +1,8 @@
 package utkereso;
-
+/**
+*
+* @author Cheng
+*/
 public class MyNode {
     String name;
     String type;// good coding practice would have this as private

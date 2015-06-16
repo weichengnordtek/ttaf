@@ -1,8 +1,8 @@
-/**
- *
- * @author Meev
- */
 package utkereso;
+/**
+*
+* @author Cheng
+*/
 import java.util.*;
 import java.awt.Dimension;
 import java.awt.Color;
@@ -27,14 +27,8 @@ import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 import org.apache.commons.collections15.Transformer;
-
 public class Utkereso {
-
-  
   public static void main(String[] args) {
-    
-    
-    
     UndirectedSparseGraph g = new UndirectedSparseGraph();
     //Város csomópontok
     MyNode v1 = new MyNode("Bukarest","v"); 
@@ -88,8 +82,7 @@ public class Utkereso {
     g.addEdge(e14, u6, v2);
     g.addEdge(e12, v4,v5);
     g.addEdge(e13, v5,u1);
-    //Algoritmusok 
-    
+
     //Módszer 1:  Teljes útvonal heurisztikus 
     Transformer<MyLink, Double> wtTransformer = new Transformer<MyLink,Double>() {
         public Double transform(MyLink link) {
@@ -98,104 +91,140 @@ public class Utkereso {
     };
     DijkstraShortestPath<MyNode,MyLink> alg = new DijkstraShortestPath(g,
     wtTransformer);
-    List<MyLink> l = alg.getPath(v1, v3);
+    final List<MyLink> mod1 = alg.getPath(v1, v3);
     Number dist = alg.getDistance(v1, v3);
+    
+    //Kiiratas
     System.out.println("-----Módszer 1-----");
     System.out.println("The shortest path from" + v1 + " to " + v3 + " is:");
-    System.out.println(l.toString());
+    System.out.println(mod1.toString());
     System.out.println("and the length of the path is: " + dist);
     
-    //Módszer 2: heurisztikus algoritmussal a megadott kezdő és végpontokat 
+    //Módszer 2 
     //Startbol -> legközelebbi autopalya 
     Bejaras Floyd =  new Bejaras(g,v1,Tranzit);
+    final List<MyLink> mod2_a=Floyd.getShortestPath();
     System.out.println(Floyd.getShortestPath());
     System.out.println(Floyd.getDistance());
     System.out.println(Floyd.getVegpont());
-    //Vegpont -> legközelebbi autopalya
+    
+    //Vegpontbol -> legközelebbi autopalya
     Bejaras Floyd2 =  new Bejaras(g,v3,Tranzit);
+    final List<MyLink> mod2_c=Floyd2.getShortestPath();
     System.out.println(Floyd2.getShortestPath());
     System.out.println(Floyd2.getDistance());
     System.out.println(Floyd2.getVegpont());
+    
     //Autopalya közötti legrövidebb út
-    List<MyLink> Floyd3 = alg.getPath(Floyd.getVegpont(), Floyd2.getVegpont());
+    final List<MyLink> Floyd3 = alg.getPath(Floyd.getVegpont(), Floyd2.getVegpont());
     Number dist3 = alg.getDistance(Floyd.getVegpont(), Floyd2.getVegpont());
-    System.out.println("-----Módszer 2-----");
+    
+    //Kiiratas
+    System.out.println("-----Módszer 1-----");
     System.out.println("The shortest path from" + v1 + " to " + v3 + " is:");
     System.out.println(Floyd.getShortestPath()+Floyd3.toString()+Floyd2.getShortestPath());
     System.out.println("Total Length" + v1 + " to " + v3 + " is:");
     System.out.println(Floyd.getDistance()+dist3.doubleValue()+Floyd2.getDistance());
  
     
+    //MEGJELENÍTÉS
+    Layout<MyNode, MyLink> layout = new ISOMLayout(g);
+    layout.setSize(new Dimension(1000,500));
+    BasicVisualizationServer<MyNode,MyLink> vv = new BasicVisualizationServer<MyNode,MyLink>(layout);
+    vv.setPreferredSize(new Dimension(1200,600));       
+    Transformer<MyNode,Paint> vertexPaint = new Transformer<MyNode,Paint>() {
+        public Paint transform(MyNode i) {
+            if(i.getType()=="u")
+            {
+                System.setProperty("libafos", "0Xd4edfc");
+                return Color.getColor("libafos");
+            }
+            else
+            {
+                System.setProperty("rozsaszin", "0Xef3298");
+                return Color.getColor("rozsaszin");
+            }
+        }
+    };  
+   Transformer<MyNode,Shape> vertexSize = new Transformer<MyNode,Shape>(){
+        public Shape transform(MyNode i){
+            Rectangle2D rect = new Rectangle2D.Double(-65,-30,65,30);
+            return rect;
+        }
+    };
+    Transformer<MyLink, Paint> edgePaint = new Transformer<MyLink, Paint>() {
+        public Paint transform(MyLink s) {
+            return Color.BLACK;
+        }
+    };
+    Transformer<MyLink, Stroke> edgeStroke = new Transformer<MyLink, Stroke>() {
+        float dash[] = { 5.0f };
+        public Stroke transform(MyLink s) {
+            return new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
+                    BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f);
+        }
+    };
+    Transformer<MyLink, Font> edgeFont = new Transformer<MyLink, Font>() {
+        public Font transform(MyLink f) {
+                Font font = new Font("Times New Roman", Font.PLAIN, 8);
+                return font;
+        }
+    };
+     Transformer<MyLink, String> edgeLabel = new Transformer<MyLink, String>() {
+        public String transform(MyLink f) {
+                return f.toString()+" :"+String.valueOf(f.weight);
+        }
+    };
+    vv.getRenderContext().setEdgeDrawPaintTransformer(edgePaint);
+    vv.getRenderContext().setVertexShapeTransformer(vertexSize);
+    vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
+    vv.getRenderContext().setEdgeLabelTransformer(edgeLabel);
+    vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
+    vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);        
+    //LEGRÖVIDEBB ÚT szinezés
+    //Módszer 1 LEGRÖVIDEBB ÚT SZINEZÉS (teljes út)
+    Transformer<MyLink, Paint> short1Paint = new Transformer<MyLink, Paint>() {
+        public Paint transform(MyLink s) {
+            if(mod1.contains(s))
+            {
+                return Color.RED;
+            }
+            else
+            {
+                return Color.BLACK;
+            }
+        }
+    };
+    //vv.getRenderContext().setEdgeDrawPaintTransformer(short1Paint);
+    //Módszer 2 tranzittáblával legrövidebb út szinezés
+    Transformer<MyLink, Paint> short2Paint = new Transformer<MyLink, Paint>() {
+        public Paint transform(MyLink s) {
+            System.setProperty("zold", "0X96d72d");
+            System.setProperty("sarga", "0Xffd700");
+            if(mod2_a.contains(s))
+            {
+                return Color.getColor("zold");
+            }
+            else if(mod2_c.contains(s))
+            {
+                return Color.getColor("zold");
+            }
+            else if(Floyd3.contains(s))
+            {
+                return Color.RED;
+            }
+            else
+            {
+                return Color.BLACK;
+            }
+        }
+    };
+    vv.getRenderContext().setEdgeDrawPaintTransformer(short2Paint);
     
-        Layout<MyNode, MyLink> layout = new ISOMLayout(g);
-        
-        layout.setSize(new Dimension(1000,500));
-        BasicVisualizationServer<MyNode,MyLink> vv = new BasicVisualizationServer<MyNode,MyLink>(layout);
-        vv.setPreferredSize(new Dimension(1200,600));       
-        
-
-        // Setup up a new vertex to paint transformer...
-        Transformer<MyNode,Paint> vertexPaint = new Transformer<MyNode,Paint>() {
-            public Paint transform(MyNode i) {
-                if(i.getType()=="u")
-                {
-                    System.setProperty("libafos", "0Xd4edfc");
-                    return Color.getColor("libafos");
-                }
-                else
-                {
-                    System.setProperty("rozsaszin", "0Xef3298");
-                    return Color.getColor("rozsaszin");
-                }
-            }
-        };  
-       Transformer<MyNode,Shape> vertexSize = new Transformer<MyNode,Shape>(){
-            public Shape transform(MyNode i){
-                Rectangle2D rect = new Rectangle2D.Double(-65,-30,65,30);
-                // in this case, the vertex is twice as large
-                return rect;
-            }
-        };
-       
-        Transformer<MyLink, Paint> edgePaint = new Transformer<MyLink, Paint>() {
-            public Paint transform(MyLink s) {
-                return Color.getHSBColor(0.56f, 1.0f, 0.8f);
-            }
-        };
-
-        Transformer<MyLink, Stroke> edgeStroke = new Transformer<MyLink, Stroke>() {
-            float dash[] = { 5.0f };
-            public Stroke transform(MyLink s) {
-                return new BasicStroke(1.0f, BasicStroke.CAP_BUTT,
-                        BasicStroke.JOIN_MITER, 10.0f, dash, 0.0f);
-            }
-        };
-        Transformer<MyLink, Font> edgeFont = new Transformer<MyLink, Font>() {
-            public Font transform(MyLink f) {
-                    Font font = new Font("Times New Roman", Font.PLAIN, 8);
-                    return font;
-            }
-        };
-         Transformer<MyLink, String> edgeLabel = new Transformer<MyLink, String>() {
-            public String transform(MyLink f) {
-                    return f.toString()+" :"+String.valueOf(f.weight);
-            }
-        };
-         
-        vv.getRenderContext().setEdgeDrawPaintTransformer(edgePaint);
-       // vv.getRenderContext().setEdgeStrokeTransformer(edgeStroke);
-        
-        vv.getRenderContext().setVertexShapeTransformer(vertexSize);
-        vv.getRenderContext().setVertexFillPaintTransformer(vertexPaint);
-        vv.getRenderContext().setEdgeLabelTransformer(edgeLabel);
-        vv.getRenderContext().setVertexLabelTransformer(new ToStringLabeller());
-     //   vv.getRenderContext().setEdgeLabelTransformer(new ToStringLabeller());
-        vv.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR);        
-
-        JFrame frame = new JFrame();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.getContentPane().add(vv);
-        frame.pack();
-        frame.setVisible(true);     
+    JFrame frame = new JFrame();
+    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    frame.getContentPane().add(vv);
+    frame.pack();
+    frame.setVisible(true);     
   }
 }

@@ -1,7 +1,10 @@
 package utkereso;
 import java.util.*;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
-
+/**
+*
+* @author Meev
+*/
 public class BreadthFirstIterator implements Iterator<MyNode> {
     private Set<MyNode> visited = new HashSet<MyNode>();
     private Queue<MyNode> queue = new LinkedList<MyNode>();
