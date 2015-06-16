@@ -96,34 +96,35 @@ public class Utkereso {
     
     //Kiiratas
     System.out.println("-----Módszer 1-----");
-    System.out.println("The shortest path from" + v1 + " to " + v3 + " is:");
+    System.out.println("The shortest path from " + v1 + " to " + v3 + " is:");
     System.out.println(mod1.toString());
-    System.out.println("and the length of the path is: " + dist);
+    System.out.println("and the length of the path is: " );
+    System.out.println(dist);
     
     //Módszer 2 
     //Startbol -> legközelebbi autopalya 
     Bejaras Floyd =  new Bejaras(g,v1,Tranzit);
     final List<MyLink> mod2_a=Floyd.getShortestPath();
-    System.out.println(Floyd.getShortestPath());
-    System.out.println(Floyd.getDistance());
-    System.out.println(Floyd.getVegpont());
+   // System.out.println(Floyd.getShortestPath());
+   // System.out.println(Floyd.getDistance());
+   // System.out.println(Floyd.getVegpont());
     
     //Vegpontbol -> legközelebbi autopalya
     Bejaras Floyd2 =  new Bejaras(g,v3,Tranzit);
     final List<MyLink> mod2_c=Floyd2.getShortestPath();
-    System.out.println(Floyd2.getShortestPath());
-    System.out.println(Floyd2.getDistance());
-    System.out.println(Floyd2.getVegpont());
+   // System.out.println(Floyd2.getShortestPath());
+   // System.out.println(Floyd2.getDistance());
+   // System.out.println(Floyd2.getVegpont());
     
     //Autopalya közötti legrövidebb út
     final List<MyLink> Floyd3 = alg.getPath(Floyd.getVegpont(), Floyd2.getVegpont());
     Number dist3 = alg.getDistance(Floyd.getVegpont(), Floyd2.getVegpont());
     
     //Kiiratas
-    System.out.println("-----Módszer 1-----");
-    System.out.println("The shortest path from" + v1 + " to " + v3 + " is:");
+    System.out.println("-----Módszer 2-----");
+    System.out.println("The shortest path from " + v1 + " to " + v3 + " is:");
     System.out.println(Floyd.getShortestPath()+Floyd3.toString()+Floyd2.getShortestPath());
-    System.out.println("Total Length" + v1 + " to " + v3 + " is:");
+    System.out.println("and the length of the path is: ");
     System.out.println(Floyd.getDistance()+dist3.doubleValue()+Floyd2.getDistance());
  
     
