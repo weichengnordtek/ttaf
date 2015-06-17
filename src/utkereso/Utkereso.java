@@ -223,6 +223,7 @@ private Panel createHighwayRoutePanel(String routeText) {
 	                return f.toString()+" :"+String.valueOf(f.weight);
 	        }
 	    };
+	    
 	    visualizer.getRenderContext().setEdgeDrawPaintTransformer(edgePaint);
 	    visualizer.getRenderContext().setVertexShapeTransformer(vertexSize);
 	    visualizer.getRenderContext().setVertexFillPaintTransformer(vertexPaint);

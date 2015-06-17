@@ -21,7 +21,6 @@ public class HighwayRouteToColorTransformer implements Transformer<Road, Paint> 
 	@Override
     public Paint transform(Road s) {
         System.setProperty("zold", "0X96d72d");
-        System.setProperty("sarga", "0Xffd700");
         if(startToHighway.contains(s))
         {
             return Color.getColor("zold");
