@@ -27,6 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
 import edu.uci.ics.jung.algorithms.layout.CircleLayout;
+import edu.uci.ics.jung.algorithms.layout.StaticLayout;
 import edu.uci.ics.jung.visualization.util.VertexShapeFactory;
 import edu.uci.ics.jung.algorithms.layout.KKLayout;
 import edu.uci.ics.jung.algorithms.layout.ISOMLayout;
@@ -72,11 +73,30 @@ public void setRoadNetwork(RoadNetwork network) {
 }
 
 public void show() {
-    Layout<MapNode, Road> roadNetworkLayout = new ISOMLayout<MapNode, Road>(roadNetwork.getNetworkGraph());
+
+	
+	//Layout<MapNode, Road> roadNetworkLayout = new ISOMLayout<MapNode, Road>(roadNetwork.getNetworkGraph());
+	Layout<MapNode, Road> roadNetworkLayout = new StaticLayout<MapNode, Road>(roadNetwork.getNetworkGraph());
+
     roadNetworkLayout.setSize(new Dimension(1000,500));
     visualizer = getVisualizer(roadNetworkLayout);
+
+    //Cities's locations
+    roadNetworkLayout.setLocation(roadNetwork.getCityByName("Budapest"), new Point2D.Double(600.0, 150.0));
+    roadNetworkLayout.setLocation(roadNetwork.getCityByName("Berlin"), new Point2D.Double(150.0,50.0));	
+    roadNetworkLayout.setLocation(roadNetwork.getCityByName("Bukarest"), new Point2D.Double(1000.0,550.0));
+    roadNetworkLayout.setLocation(roadNetwork.getCityByName("Megallo1"), new Point2D.Double(750.0,550.0));
+    roadNetworkLayout.setLocation(roadNetwork.getCityByName("Megallo2"), new Point2D.Double(450.0,550.0));
     
-    roadNetworkLayout.setLocation(roadNetwork.getCityByName("Bukarest"), new Point2D.Double(100.0, 100.0));
+    //Road locations
+    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m1"), new Point2D.Double(250.0,370.0));
+    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m3"), new Point2D.Double(430.0,120.0));
+    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m4"), new Point2D.Double(430.0,420.0));
+    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m2"), new Point2D.Double(630.0,370.0));
+    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m5"), new Point2D.Double(930.0,370.0));
+    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m6"), new Point2D.Double(930.0,170.0));
+    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m7"), new Point2D.Double(750.0,200.0));
+    
     
     Panel shortestRoutePanel = createShortestRoutePanel("shortestRouteText");
     Panel highwayRoutePanel = createHighwayRoutePanel("highwayRouteText");
@@ -175,7 +195,8 @@ private Panel createHighwayRoutePanel(String routeText) {
 	    };  
 	   Transformer<MapNode,Shape> vertexSize = new Transformer<MapNode,Shape>(){
 	        public Shape transform(MapNode i){
-	            Rectangle2D rect = new Rectangle2D.Double(-65,-30,65,30);
+	            //Rectangle2D rect = new Rectangle2D.Double(-65,-30,65,30);
+	            Ellipse2D rect = new Ellipse2D.Double(-35, -35, 60, 60);
 	            return rect;
 	        }
 	    };

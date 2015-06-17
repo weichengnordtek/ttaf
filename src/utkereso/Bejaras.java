@@ -17,7 +17,7 @@ import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
  *
  * @author Cheng
  */
-//FLOYD MARSHAL ALGORITMUS 
+
 // G: gráf , staringVertext: kezdőcsúcs, path: tranzittábla
 public class Bejaras {
     private List<Road> shortestpath = new ArrayList<Road>(); //legrövidebb út

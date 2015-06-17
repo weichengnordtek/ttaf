@@ -98,13 +98,14 @@ public class RoadNetwork {
 	    network.addEdge(roads.get(4), 	junctions.get(2), 	junctions.get(1));
 	    network.addEdge(roads.get(5), 	junctions.get(0), 	junctions.get(2));
 	    network.addEdge(roads.get(6), 	junctions.get(1), 	junctions.get(3));
-	    network.addEdge(roads.get(7),	junctions.get(4), 	cities.get(2));
+	    network.addEdge(roads.get(7),	junctions.get(2), 	cities.get(2));
 	    network.addEdge(roads.get(8), 	junctions.get(4), 	junctions.get(5));
 	    network.addEdge(roads.get(9), 	junctions.get(5), 	junctions.get(6));
 	    network.addEdge(roads.get(10), 	junctions.get(6), 	cities.get(1));
 	    network.addEdge(roads.get(13), 	junctions.get(5), 	cities.get(1));
 	    network.addEdge(roads.get(11), 	cities.get(3),		cities.get(4));
 	    network.addEdge(roads.get(12), 	cities.get(4),		junctions.get(0));
+	    network.addEdge(roads.get(14), 	junctions.get(6),   junctions.get(1));
 	    return network;
 	}
 	
@@ -120,7 +121,7 @@ public class RoadNetwork {
 	
 	private ArrayList<MapNode> buildJunctionList() {
 		ArrayList<MapNode> junctions = new ArrayList<MapNode>();
-
+	
 		junctions.add(new MapNode("m1","u"));
 		junctions.add(new MapNode("m2","u"));
 		junctions.add(new MapNode("m3","u"));
@@ -128,27 +129,28 @@ public class RoadNetwork {
 		junctions.add(new MapNode("m5","u"));
 		junctions.add(new MapNode("m6","u"));
 		junctions.add(new MapNode("m7","u"));
-		
+
 		return junctions;
 	}
 	
 	private LinkedList<Road> buildRoadList() {
 		LinkedList<Road> roads = new LinkedList<Road>();
-
+		
 	    roads.add(new Road("ut1",3));
 	    roads.add(new Road("ut2",2));
 	    roads.add(new Road("ut3",1));
 	    roads.add(new Road("ut4",5));
 	    roads.add(new Road("ut5",6));
 	    roads.add(new Road("ut6",7));
-	    roads.add(new Road("ut7",8));
+	    roads.add(new Road("ut7",1.5));
 	    roads.add(new Road("ut8",9));
 	    roads.add(new Road("ut9",1));
 	    roads.add(new Road("ut10",2));
 	    roads.add(new Road("ut11",2));
 	    roads.add(new Road("ut12",2));
 	    roads.add(new Road("ut13",1));
-	    roads.add(new Road("ut14",1));
+	    roads.add(new Road("ut14",5));
+	    roads.add(new Road("ut15",3));
 	    
 	    return roads;
 	}
