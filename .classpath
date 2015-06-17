@@ -2,32 +2,23 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/collections-generic-4.01.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/colt-1.2.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/concurrent-1.3.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/j3d-core-1.3.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-3d-2.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-3d-2.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-3d-demos-2.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-3d-demos-2.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-algorithms-2.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-algorithms-2.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-api-2.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-api-2.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-graph-impl-2.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-graph-impl-2.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-io-2.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-io-2.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-jai-2.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-jai-2.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-jai-samples-2.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-jai-samples-2.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-samples-2.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-samples-2.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-visualization-2.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/jung-visualization-2.0.1-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/stax-api-1.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/vecmath-1.3.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/Meev/Desktop/ELTE/graph/wstx-asl-3.2.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/collections-generic-4.01.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/colt-1.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/concurrent-1.3.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/j3d-core-1.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/jung-3d-2.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/jung-3d-demos-2.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/jung-algorithms-2.0.1.jar" sourcepath="C:/Users/Attila/Dev/java/jung-sources/jung-algorithms-2.0.1-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/jung-api-2.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/jung-graph-impl-2.0.1.jar" sourcepath="C:/Users/Attila/Dev/java/jung-sources/jung-graph-impl-2.0.1-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/jung-io-2.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/jung-jai-2.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/jung-jai-samples-2.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/jung-samples-2.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/jung-visualization-2.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/stax-api-1.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/vecmath-1.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Attila/Dev/java/wstx-asl-3.2.6.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

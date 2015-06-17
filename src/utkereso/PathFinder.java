@@ -19,13 +19,13 @@ import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
  */
 
 // G: gráf , staringVertext: kezdőcsúcs, path: tranzittábla
-public class Bejaras {
+public class PathFinder {
     private List<Road> shortestpath = new ArrayList<Road>(); //legrövidebb út
     private UndirectedSparseGraph<MapNode, Road> graph; // gráf
     private MapNode vegpont; // autópálya csomópont amit keresük
     private Double distance; // legrövidebb útnak a hossza
     
-    public Bejaras(UndirectedSparseGraph<MapNode, Road> g, MapNode startingVertex, List<MapNode> path) {
+    public PathFinder(UndirectedSparseGraph<MapNode, Road> g, MapNode startingVertex, List<MapNode> path) {
         this.graph = g;
         
         Transformer<Road, Double> wtTransformer = new Transformer<Road,Double>() {
@@ -33,18 +33,18 @@ public class Bejaras {
 	            return link.weight;
 	        }
         };
-        DijkstraShortestPath<MapNode,Road> alg = new DijkstraShortestPath<MapNode, Road>(g,wtTransformer);
-        double min = alg.getDistance(startingVertex, path.get(0)).doubleValue();
+        DijkstraShortestPath<MapNode,Road> pathFinder = new DijkstraShortestPath<MapNode, Road>(g,wtTransformer);
+        double min = pathFinder.getDistance(startingVertex, path.get(0)).doubleValue();
         this.vegpont = path.get(0);
         for(int i = 1; i < path.size(); i++) {
-            if(alg.getDistance(startingVertex, path.get(i)).doubleValue()<min)
+            if(pathFinder.getDistance(startingVertex, path.get(i)).doubleValue()<min)
             {
-                min=alg.getDistance(startingVertex, path.get(i)).doubleValue();
+                min=pathFinder.getDistance(startingVertex, path.get(i)).doubleValue();
                 this.vegpont=path.get(i);
             }
         }
         
-        this.shortestpath=alg.getPath(startingVertex, vegpont);
+        this.shortestpath=pathFinder.getPath(startingVertex, vegpont);
         this.distance=min;
     }
     public MapNode getVegpont() {

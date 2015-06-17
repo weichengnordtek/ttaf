@@ -1,5 +1,7 @@
 package utkereso;
 
+import java.util.Collections;
+import java.util.LinkedList;
 import java.util.List;
 
 public class Route {
@@ -22,6 +24,12 @@ public class Route {
 	
 	public Double getLength() {
 		return length;
+	}
+	
+	public Route reverse() {
+		List<Road> reversedRoadList = (List<Road>) ((LinkedList<Road>) path).clone();
+		Collections.reverse(reversedRoadList);
+		return new Route(reversedRoadList, length);
 	}
 	
 }

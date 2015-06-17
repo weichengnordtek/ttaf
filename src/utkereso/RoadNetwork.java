@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Observable;
 
 import org.apache.commons.collections15.Transformer;
 
 import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
 import edu.uci.ics.jung.graph.UndirectedSparseGraph;
+import edu.uci.ics.jung.graph.util.Pair;
 
 public class RoadNetwork {
 
@@ -23,12 +23,44 @@ public class RoadNetwork {
 	    network = new UndirectedSparseGraph<MapNode, Road>();
 	    cities = buildCityList();
 	    junctions = buildJunctionList();
-	    highwayJunctions = junctions;
+	    highwayJunctions = buildHighwayJunctionList();
 	    roads = buildRoadList();
 	    
 	    network = buildNetwork();
 	}
+
+	public LinkedList<MapNode> getCities() {
+		return cities;
+	}
+
+	protected void setCities(LinkedList<MapNode> cities) {
+		this.cities = cities;
+	}
 	
+	public ArrayList<MapNode> getJunctions() {
+		return junctions;
+	}
+
+	protected void setJunctions(ArrayList<MapNode> junctions) {
+		this.junctions = junctions;
+	}
+
+	public ArrayList<MapNode> getHighwayJunctions() {
+		return highwayJunctions;
+	}
+
+	protected void setHighwayJunctions(ArrayList<MapNode> highwayJunctions) {
+		this.highwayJunctions = highwayJunctions;
+	}
+
+	public LinkedList<Road> getRoads() {
+		return roads;
+	}
+
+	protected void setRoads(LinkedList<Road> roads) {
+		this.roads = roads;
+	}
+
 	public UndirectedSparseGraph<MapNode, Road> getNetworkGraph() {
 		return network;
 	}
@@ -55,7 +87,15 @@ public class RoadNetwork {
 		return null;
 	} 
 	
-	public Route findShortestRoute(String city1, String city2) {
+	public MapNode getNodeByName(String name){
+		MapNode foundCity = getCityByName(name);
+		if (foundCity == null) {
+			return getJunctionByName(name);
+		}
+		return foundCity;
+	} 
+	
+	public Route findShortestRoute(String startNodeName, String endNodeName) {
 
 	    Transformer<Road, Double> wtTransformer = new Transformer<Road,Double>() {
 	        public Double transform(Road link) {
@@ -63,28 +103,45 @@ public class RoadNetwork {
 	        }
 	    };
 	    DijkstraShortestPath<MapNode,Road> pathFinder = new DijkstraShortestPath<MapNode, Road>(network, wtTransformer);
-	    List<Road> path = pathFinder.getPath(getCityByName(city1), getCityByName(city2));
-	    Double dist = pathFinder.getDistance(getCityByName(city1), getCityByName(city2)).doubleValue();
+	    List<Road> path = pathFinder.getPath(getNodeByName(startNodeName), getNodeByName(endNodeName));
+	    Double dist = pathFinder.getDistance(getNodeByName(startNodeName), getNodeByName(endNodeName)).doubleValue();
+	    return new Route(path, dist);
+	}
+	
+	public Route findShortestRouteOnHighway(String startNodeName, String endNodeName) {
+
+	    Transformer<Road, Double> wtTransformer = new Transformer<Road,Double>() {
+	        public Double transform(Road link) {
+	        	Pair<MapNode> endPoints = network.getEndpoints(link);
+	        	if (endPoints.getFirst().getType().equals("h") && endPoints.getSecond().getType().equals("h")) {
+	        		return link.weight;
+	        	}
+	        	else {
+	        		return Double.MAX_VALUE;
+	        	}
+	        }
+	    };
+	    DijkstraShortestPath<MapNode,Road> pathFinder = new DijkstraShortestPath<MapNode, Road>(network, wtTransformer);
+	    List<Road> path = pathFinder.getPath(getNodeByName(startNodeName), getNodeByName(endNodeName));
+	    Double dist = pathFinder.getDistance(getNodeByName(startNodeName), getNodeByName(endNodeName)).doubleValue();
 	    return new Route(path, dist);
 	}
 	
 	public List<Route> findHighwayRoute(String city1, String city2) {
-	    //Startbol -> legközelebbi autopalya 
-	    Bejaras Floyd =  new Bejaras(network,getCityByName(city1),highwayJunctions);
-	    List<Road> startpointToHighway =Floyd.getShortestPath();
-	    Route startRoute = new Route(startpointToHighway, Floyd.getDistance());
+	    PathFinder floyd1 = new PathFinder(network,getCityByName(city1),highwayJunctions);
+	    List<Road> startpointToHighway = floyd1.getShortestPath();
+	    Route startRoute = new Route(startpointToHighway, floyd1.getDistance());
 	    
-	    //Vegpontbol -> legközelebbi autopalya
-	    Bejaras Floyd2 =  new Bejaras(network,getCityByName(city2),highwayJunctions);
-	    List<Road> endpointTohighway =Floyd2.getShortestPath();
-	    Route endRoute = new Route(endpointTohighway, Floyd2.getDistance());
+	    PathFinder floyd2 =  new PathFinder(network,getCityByName(city2),highwayJunctions);
+	    List<Road> endpointTohighway = floyd2.getShortestPath();
+	    Route endRoute = new Route(endpointTohighway, floyd2.getDistance());
 	    
-	    Route highwayRoute = findShortestRoute(city1, city2);
+	    Route highwayRoute = findShortestRouteOnHighway(floyd1.getVegpont().getName(), floyd2.getVegpont().getName());
 	    
 	    ArrayList<Route> routes = new ArrayList<Route>(3);
 	    routes.add(startRoute);
-	    routes.add(endRoute);
 	    routes.add(highwayRoute);
+	    routes.add(endRoute);
 	    
 	    return routes;
 	}
@@ -122,15 +179,25 @@ public class RoadNetwork {
 	private ArrayList<MapNode> buildJunctionList() {
 		ArrayList<MapNode> junctions = new ArrayList<MapNode>();
 	
-		junctions.add(new MapNode("m1","u"));
-		junctions.add(new MapNode("m2","u"));
+		junctions.add(new MapNode("m1","h"));
+		junctions.add(new MapNode("m2","h"));
 		junctions.add(new MapNode("m3","u"));
 		junctions.add(new MapNode("m4","u"));
-		junctions.add(new MapNode("m5","u"));
-		junctions.add(new MapNode("m6","u"));
+		junctions.add(new MapNode("m5","h"));
+		junctions.add(new MapNode("m6","h"));
 		junctions.add(new MapNode("m7","u"));
 
 		return junctions;
+	}
+
+	private ArrayList<MapNode> buildHighwayJunctionList() {
+		ArrayList<MapNode> highwayJunctions = new ArrayList<MapNode>();
+		for (MapNode junction: junctions) {
+			if (junction.getType().equals("h")) {
+				highwayJunctions.add(junction);
+			}
+		}
+		return highwayJunctions;
 	}
 	
 	private LinkedList<Road> buildRoadList() {

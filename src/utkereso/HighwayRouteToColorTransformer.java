@@ -19,17 +19,17 @@ public class HighwayRouteToColorTransformer implements Transformer<Road, Paint> 
 	}
 	
 	@Override
-    public Paint transform(Road s) {
+    public Paint transform(Road road) {
         System.setProperty("zold", "0X96d72d");
-        if(startToHighway.contains(s))
+        if(startToHighway.contains(road))
         {
             return Color.getColor("zold");
         }
-        else if(endToHighway.contains(s))
+        else if(endToHighway.contains(road))
         {
             return Color.getColor("zold");
         }
-        else if(highway.contains(s))
+        else if(highway.contains(road))
         {
             return Color.RED;
         }
