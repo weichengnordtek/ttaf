@@ -4,17 +4,14 @@ public class Main {
 
 	public static void main(String[] args) {
 		RoadNetwork network = new RoadNetwork();
-		Router utkereso = new Router();
+		RoutePlanner routePlanner = new RoutePlanner();
 		Controller controller = new Controller();
-		Model model = new Model();
-		
-		model.addObserver(utkereso);
 		
 		controller.addModel(network);
-		controller.addView(utkereso);
+		controller.addView(routePlanner);
 		
-		utkereso.show();
-		utkereso.addController(controller);
+		routePlanner.show();
+		routePlanner.addController(controller);
 		
 
 	}

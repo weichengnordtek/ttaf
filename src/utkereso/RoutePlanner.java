@@ -3,47 +3,33 @@ package utkereso;
 *
 * @author Cheng
 */
-import java.util.*;
+import java.awt.BasicStroke;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Paint;
 import java.awt.Panel;
 import java.awt.Shape;
 import java.awt.Stroke;
-import java.awt.Font;
-import java.awt.BasicStroke;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.geom.Dimension2D;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.AffineTransform;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JTextArea;
 
-import edu.uci.ics.jung.algorithms.layout.CircleLayout;
-import edu.uci.ics.jung.algorithms.layout.StaticLayout;
-import edu.uci.ics.jung.visualization.util.VertexShapeFactory;
-import edu.uci.ics.jung.algorithms.layout.KKLayout;
-import edu.uci.ics.jung.algorithms.layout.ISOMLayout;
+import org.apache.commons.collections15.Transformer;
+
 import edu.uci.ics.jung.algorithms.layout.Layout;
-import edu.uci.ics.jung.graph.UndirectedSparseGraph;
+import edu.uci.ics.jung.algorithms.layout.StaticLayout;
 import edu.uci.ics.jung.visualization.BasicVisualizationServer;
-import edu.uci.ics.jung.visualization.VisualizationImageServer;
-import edu.uci.ics.jung.algorithms.shortestpath.DijkstraShortestPath;
 import edu.uci.ics.jung.visualization.decorators.ToStringLabeller;
 import edu.uci.ics.jung.visualization.renderers.Renderer.VertexLabel.Position;
 
-import org.apache.commons.collections15.Transformer;
 
-
-public class Router implements java.util.Observer {
+public class RoutePlanner {
 	private RoadNetwork roadNetwork;
 	private BasicVisualizationServer<MapNode, Road> visualizer;
 	private JButton shortestRouteButton;
@@ -93,7 +79,7 @@ public class Router implements java.util.Observer {
 	    
 	    double highwayDistance = highwayRoute.get(0).getLength().doubleValue()+highwayRoute.get(1).getLength().doubleValue()+highwayRoute.get(2).getLength().doubleValue();
 		String highwayRouteText = "The shortest path from " + city1 + " to " + city2 + " is:\n" +
-									highwayRoute.get(0).toString()+highwayRoute.get(1).toString()+highwayRoute.get(2).reverse().toString() + "\n" +
+									highwayRoute.get(0).toString()+highwayRoute.get(1).toString()+highwayRoute.get(2).toString() + "\n" +
 									"and the length of the path is: \n" +
 									highwayDistance;
 	    
@@ -133,24 +119,24 @@ public class Router implements java.util.Observer {
 	public void show() {
 		roadNetworkLayout = new StaticLayout<MapNode, Road>(roadNetwork.getNetworkGraph());
 	
-	    roadNetworkLayout.setSize(new Dimension(1000,500));
+	    roadNetworkLayout.setSize(new Dimension(900,500));
 	    visualizer = getVisualizer(roadNetworkLayout);
 	
 	    //Cities's locations
 	    roadNetworkLayout.setLocation(roadNetwork.getCityByName("Budapest"), new Point2D.Double(600.0, 150.0));
 	    roadNetworkLayout.setLocation(roadNetwork.getCityByName("Berlin"), new Point2D.Double(150.0,50.0));	
-	    roadNetworkLayout.setLocation(roadNetwork.getCityByName("Bukarest"), new Point2D.Double(1000.0,550.0));
-	    roadNetworkLayout.setLocation(roadNetwork.getCityByName("Megallo1"), new Point2D.Double(750.0,550.0));
-	    roadNetworkLayout.setLocation(roadNetwork.getCityByName("Megallo2"), new Point2D.Double(450.0,550.0));
+	    roadNetworkLayout.setLocation(roadNetwork.getCityByName("Bukarest"), new Point2D.Double(800.0,550.0));
+	    roadNetworkLayout.setLocation(roadNetwork.getCityByName("Belgrad"), new Point2D.Double(600.0,550.0));
+	    roadNetworkLayout.setLocation(roadNetwork.getCityByName("Szeged"), new Point2D.Double(250.0,550.0));
 	    
 	    //Road locations
-	    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m1"), new Point2D.Double(250.0,370.0));
+	    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m1"), new Point2D.Double(200.0,300.0));
 	    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m3"), new Point2D.Double(430.0,120.0));
 	    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m4"), new Point2D.Double(430.0,420.0));
 	    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m2"), new Point2D.Double(630.0,370.0));
-	    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m5"), new Point2D.Double(930.0,370.0));
-	    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m6"), new Point2D.Double(930.0,170.0));
-	    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m7"), new Point2D.Double(750.0,200.0));
+	    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m5"), new Point2D.Double(830.0,370.0));
+	    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m6"), new Point2D.Double(830.0,170.0));
+	    roadNetworkLayout.setLocation(roadNetwork.getJunctionByName("m7"), new Point2D.Double(700.0,250.0));
 	    
 	    
 	    Panel shortestRoutePanel = createShortestRoutePanel("Select two cities");
@@ -177,7 +163,7 @@ public class Router implements java.util.Observer {
 		shortestRouteTextArea = new JTextArea(routeText);
 	    shortestRouteTextArea.setEditable(false);
 	    shortestRouteTextArea.setFont(new Font("Arial", Font.PLAIN, 20));
-	    shortestRouteTextArea.setPreferredSize(new Dimension(500,250));
+	    shortestRouteTextArea.setPreferredSize(new Dimension(450,250));
 	    
 	    shortestRouteButton = new JButton("Show");
 	    shortestRouteButton.setName("ShortestRouteButton");
@@ -193,7 +179,7 @@ public class Router implements java.util.Observer {
 		highwayRouteTextArea = new JTextArea(routeText);
 	    highwayRouteTextArea.setEditable(false);
 	    highwayRouteTextArea.setFont(new Font("Arial", Font.PLAIN, 20));
-	    highwayRouteTextArea.setPreferredSize(new Dimension(500,250));
+	    highwayRouteTextArea.setPreferredSize(new Dimension(450,250));
 	    
 	    highwayRouteButton = new JButton("Show");
 	    highwayRouteButton.setName("HighwayRouteButton");
@@ -207,7 +193,7 @@ public class Router implements java.util.Observer {
 
 	private BasicVisualizationServer<MapNode, Road> getVisualizer(Layout<MapNode, Road> layout) {
 		BasicVisualizationServer<MapNode,Road> visualizer = new BasicVisualizationServer<MapNode,Road>(layout);
-	    visualizer.setPreferredSize(new Dimension(1200,600));       
+	    visualizer.setPreferredSize(new Dimension(900,600));       
 	    Transformer<MapNode,Paint> vertexPaint = new Transformer<MapNode,Paint>() {
 	        public Paint transform(MapNode mapNode) {
 	            if(mapNode.getType().equals("u"))
@@ -264,12 +250,6 @@ public class Router implements java.util.Observer {
 	    visualizer.getRenderContext().setVertexLabelTransformer(new ToStringLabeller<MapNode>());
 	    visualizer.getRenderer().getVertexLabelRenderer().setPosition(Position.CNTR); 
 		return visualizer;
-	}
-
-	@Override
-	public void update(Observable observable, Object object) {
-		System.out.println ("View      : Observable is " + observable.getClass() + ", object passed is " + object.getClass());
-		
 	}
 	
 	public void addController(Controller controller) {

@@ -136,12 +136,12 @@ public class RoadNetwork {
 	    List<Road> endpointTohighway = floyd2.getShortestPath();
 	    Route endRoute = new Route(endpointTohighway, floyd2.getDistance());
 	    
-	    Route highwayRoute = findShortestRouteOnHighway(floyd1.getVegpont().getName(), floyd2.getVegpont().getName());
+	    Route highwayRoute = findShortestRouteOnHighway(floyd1.getEndPoint().getName(), floyd2.getEndPoint().getName());
 	    
 	    ArrayList<Route> routes = new ArrayList<Route>(3);
 	    routes.add(startRoute);
 	    routes.add(highwayRoute);
-	    routes.add(endRoute);
+	    routes.add(endRoute.reverse());
 	    
 	    return routes;
 	}
@@ -171,8 +171,8 @@ public class RoadNetwork {
 	    cities.add(new MapNode("Bukarest","v")); 
 	    cities.add(new MapNode("Budapest","v"));
 	    cities.add(new MapNode("Berlin","v"));
-	    cities.add(new MapNode("Megallo1","v"));
-	    cities.add(new MapNode("Megallo2","v"));
+	    cities.add(new MapNode("Belgrad","v"));
+	    cities.add(new MapNode("Szeged","v"));
 	    return cities;
 	}
 	

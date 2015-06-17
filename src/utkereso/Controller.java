@@ -11,7 +11,7 @@ import javax.swing.JComponent;
 
 public class Controller implements ActionListener, MouseListener {
 
-	private Router view;
+	private RoutePlanner view;
 	private RoadNetwork model;
 	private LinkedList<MapNode> selectedNodes = new LinkedList<MapNode>();
 	private Route shortestRoute;
@@ -20,8 +20,6 @@ public class Controller implements ActionListener, MouseListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		JComponent source = (JComponent)e.getSource();
-		String startCityName = selectedNodes.get(0).getName();
-		String endCityName = selectedNodes.get(1).getName();
 		if (source.getName().equalsIgnoreCase("ShortestRouteButton")) {
 			view.renderShortestRoute(shortestRoute);
 		}
@@ -30,7 +28,7 @@ public class Controller implements ActionListener, MouseListener {
 		}
 	}
 	
-	public void addView(Router v){
+	public void addView(RoutePlanner v){
 		this.view = v;
 		view.setRoadNetwork(model);
 	}
