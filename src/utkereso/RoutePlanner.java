@@ -78,7 +78,8 @@ public class RoutePlanner {
 
 	    
 	    double highwayDistance = highwayRoute.get(0).getLength().doubleValue()+highwayRoute.get(1).getLength().doubleValue()+highwayRoute.get(2).getLength().doubleValue();
-		String highwayRouteText = "The shortest path from " + city1 + " to " + city2 + " is:\n" +
+		String highwayRouteText = "The shortest path from " + city1 + " to " + city2 + "\n" +
+									"using highways is:\n" +
 									highwayRoute.get(0).toString()+highwayRoute.get(1).toString()+highwayRoute.get(2).toString() + "\n" +
 									"and the length of the path is: \n" +
 									highwayDistance;
